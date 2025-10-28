@@ -78,7 +78,7 @@
   .cs-option:hover { background: rgba(255,255,255,0.01); }
   .cs-option img.flag{ width:22px; height:15px; object-fit:cover; border-radius:2px; }
   .small-muted{ font-size:12px; color:var(--muted); margin-top:6px; }
-  .controls { display:flex; gap:8px; align-items:center; margin-top:14px; }
+  .controls { display:flex; gap:8px; align-items:center; margin-top:14px; flex-wrap:wrap; }
   #adminPanel{display:none; margin-top:20px;}
 </style>
 </head>
@@ -87,7 +87,7 @@
   <header>
     <div>
       <h1>Football Predictions — Quiz</h1>
-      <p class="lead">Fill the fields and press <strong>Submit answers</strong>. You can download responses or save them locally.</p>
+      <p class="lead">Fill the fields and press <strong>Submit answers</strong>.</p>
     </div>
   </header>
 
@@ -112,14 +112,13 @@
   <section class="card" id="q2">
     <div class="points-badge">3 pts</div>
     <label class="question">2) How many cards will be shown in total?</label>
-    <div class="muted">Choose a grouped range (total yellow or red cards across both teams).</div>
-
+    <div class="muted">Choose a grouped range.</div>
     <div style="margin-top:12px" class="custom-select" id="cardsCustom">
-      <button type="button" class="cs-button" id="cardsButton" aria-haspopup="listbox" aria-expanded="false">
+      <button type="button" class="cs-button" id="cardsButton">
         <span class="label"><span id="cardsSelectedText">Select range</span></span>
-        <span style="opacity:0.8">▾</span>
+        <span style="opacity:0.8">Down Arrow</span>
       </button>
-      <div class="cs-options" id="cardsOptions" style="display:none" role="listbox" tabindex="-1"></div>
+      <div class="cs-options" id="cardsOptions" style="display:none"></div>
     </div>
   </section>
 
@@ -127,16 +126,14 @@
   <section class="card" id="q3">
     <div class="points-badge">4 pts</div>
     <label class="question">3) Name an Albion scorer today</label>
-    <div class="muted">Choose one player who will be on the Brighton scoresheet. 4 points for first goal, +2 for every subsequent goal by that player.</div>
-
+    <div class="muted">4 points for first goal, +2 for every subsequent goal.</div>
     <div style="margin-top:12px" class="custom-select" id="scorerCustom">
-      <button type="button" class="cs-button" id="scorerButton" aria-haspopup="listbox" aria-expanded="false">
+      <button type="button" class="cs-button" id="scorerButton">
         <span class="label"><img class="flag" id="scorerSelectedFlag" src="" alt="" style="display:none;"><span id="scorerSelectedText">Select a player</span></span>
-        <span style="opacity:0.8">▾</span>
+        <span style="opacity:0.8">Down Arrow</span>
       </button>
-      <div class="cs-options" id="scorerOptions" style="display:none" role="listbox" tabindex="-1"></div>
+      <div class="cs-options" id="scorerOptions" style="display:none"></div>
     </div>
-
     <div id="otherPlayerDiv" style="display:none;margin-top:10px">
       <input type="text" id="otherPlayerInput" placeholder="Type the player's name here (Other)" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit;" />
     </div>
@@ -148,7 +145,6 @@
     <div class="points-badge">12 pts</div>
     <label class="question">4) What will the final score be?</label>
     <div class="muted">Give the exact score for Palace (home) and Albion (away).</div>
-
     <div class="row" style="margin-top:12px;gap:12px;align-items:center">
       <div class="score-input">
         <label class="muted" for="homeScore">Palace</label>
@@ -160,7 +156,6 @@
         <input id="awayScore" type="number" min="0" max="20" value="0" />
       </div>
     </div>
-
     <div id="predictedOutcome" class="result" style="display:block; margin-top:12px;"></div>
   </section>
 
@@ -168,67 +163,15 @@
   <div class="controls">
     <button class="btn" id="submitBtn">Submit answers</button>
     <button class="btn secondary" id="resetBtn">Reset</button>
-    <button class="btn secondary" id="downloadCsvBtn" title="Download all submitted responses as CSV">Download Responses (.csv)</button>
-    <button class="btn secondary" id="clearResponsesBtn" title="Clear all saved responses and admin answers">Clear Responses</button>
-  </div>
-
-  <!-- Admin Panel -->
-  <section class="card" id="adminPanel">
-    <div class="points-badge">Admin</div>
-    <label class="question">Set correct answers (Admin)</label>
-
-    <div style="margin-top:8px">
-      <label>Q1: Both ends goal?</label>
-      <select id="adminQ1">
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-    </div>
-
-    <div style="margin-top:8px">
-      <label>Q2: Cards total range</label>
-      <select id="adminQ2">
-        <option value="">Select</option>
-        <option value="0">0</option>
-        <option value="1-2">1–2</option>
-        <option value="3-4">3–4</option>
-        <option value="5-6">5–6</option>
-        <option value="7-8">7–8</option>
-        <option value="9-10">9–10</option>
-        <option value="11-12">11–12</option>
-        <option value="13-14">13–14</option>
-        <option value="15+">15 or more</option>
-      </select>
-    </div>
-
-    <div style="margin-top:8px">
-      <label>Q3: Albion scorers and goals</label>
-      <input type="text" id="adminQ3" placeholder="e.g. Welbeck:2, Mitoma:1 or No one">
-    </div>
-
-    <div style="margin-top:8px">
-      <label>Q4: Final score</label>
-      <input type="number" id="adminHome" placeholder="Palace score" style="width:60px">
-      <input type="number" id="adminAway" placeholder="Albion score" style="width:60px">
-    </div>
-
-    <button class="btn" id="adminSaveBtn">Save answers</button>
-    <div id="adminMsg" class="muted" style="margin-top:6px"></div>
-  </section>
-
-  <div style="margin-top:20px">
-    <button class="btn secondary" id="accessAdminBtn">Access Admin Panel</button>
   </div>
 
   <footer>
-    <div class="muted">Tip: answers are saved to your browser (localStorage) after submit. You can download them as CSV.</div>
+    <div class="muted">Answers are saved to a Google Sheet. You can submit from any device.</div>
   </footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  /* ----------------- Player List ----------------- */
   const PLAYERS = [
     { value: 'Yasin Ayari', label: 'Yasin Ayari', flag: 'se' },
     { value: 'Carlos Baleba', label: 'Carlos Baleba', flag: 'cm' },
@@ -261,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { value: 'No one', label: 'No one', flag: null }
   ];
 
-  /* ----------------- Cards Options ----------------- */
   const CARDS_OPTIONS = [
     { value: '0', label: '0' },
     { value: '1-2', label: '1–2' },
@@ -274,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { value: '15+', label: '15 or more' }
   ];
 
-  /* ----------------- Utility ----------------- */
   const homeScoreInput = document.getElementById('homeScore');
   const awayScoreInput = document.getElementById('awayScore');
   const predictedOutcomeEl = document.getElementById('predictedOutcome');
@@ -289,42 +230,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let text = '';
     if (h > a) text = `Palace win ${h}-${a}`;
     else if (h < a) text = `Brighton win ${a}-${h}`;
-    else text = `${h}-${a} draw`;
+    else text = `Draw ${h}-${a}`;
     predictedOutcomeEl.textContent = text;
   }
 
-  function getResult(home, away) {
-    if (home > away) return 'Home win';
-    if (home < away) return 'Away win';
-    return 'Draw';
-  }
-
-  /* ----------------- Form Initialization ----------------- */
   function initForm() {
-    // Unselect radio buttons
     document.querySelectorAll('input[name="bothGoals"]').forEach(i => i.checked = false);
-    // Reset cards dropdown
     document.getElementById('cardsSelectedText').textContent = 'Select range';
-    // Reset scorer dropdown
     document.getElementById('scorerSelectedText').textContent = 'Select a player';
     document.getElementById('scorerSelectedFlag').style.display = 'none';
     document.getElementById('otherPlayerDiv').style.display = 'none';
     document.getElementById('otherPlayerInput').value = '';
-    // Set score inputs to 0
     homeScoreInput.value = 0;
     awayScoreInput.value = 0;
-    // Update predicted outcome
     updatePredictedOutcome();
   }
 
-  // Initialize form on load
   initForm();
-
-  // Attach input listeners for score prediction
   homeScoreInput.addEventListener('input', updatePredictedOutcome);
   awayScoreInput.addEventListener('input', updatePredictedOutcome);
 
-  /* ----------------- Q2 Custom Dropdown ----------------- */
+  // Q2 Dropdown
   const cardsButton = document.getElementById('cardsButton');
   const cardsOptions = document.getElementById('cardsOptions');
   const cardsSelectedText = document.getElementById('cardsSelectedText');
@@ -350,14 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cardsButton.setAttribute('aria-expanded', !isOpen);
   });
 
-  document.addEventListener('click', e => {
-    if (!cardsButton.contains(e.target) && !cardsOptions.contains(e.target)) {
-      cardsOptions.style.display = 'none';
-      cardsButton.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  /* ----------------- Q3 Custom Dropdown ----------------- */
+  // Q3 Dropdown
   const csButton = document.getElementById('scorerButton');
   const csOptions = document.getElementById('scorerOptions');
   const selectedText = document.getElementById('scorerSelectedText');
@@ -396,127 +315,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('click', e => {
+    if (!cardsButton.contains(e.target) && !cardsOptions.contains(e.target)) {
+      cardsOptions.style.display = 'none';
+      cardsButton.setAttribute('aria-expanded', 'false');
+    }
     if (!csButton.contains(e.target) && !csOptions.contains(e.target)) {
       csOptions.style.display = 'none';
       csButton.setAttribute('aria-expanded', 'false');
     }
   });
 
-  /* ----------------- Admin ----------------- */
-  let ACTUAL = { bothEnds: '', cardsTotalRange: '', actualScorers: '', homeScore: 0, awayScore: 0 };
-  const savedAdmin = localStorage.getItem('quiz_actual');
-  if (savedAdmin) {
-    ACTUAL = JSON.parse(savedAdmin);
-    document.getElementById('adminPanel').style.display = 'none';
-  }
-
-  document.getElementById('accessAdminBtn').addEventListener('click', () => {
-    const pwd = prompt("Enter admin password:");
-    if (pwd === "admin123") {
-      document.getElementById('adminPanel').style.display = 'block';
-      // Load saved answers to inputs
-      document.getElementById('adminQ1').value = ACTUAL.bothEnds;
-      document.getElementById('adminQ2').value = ACTUAL.cardsTotalRange;
-      document.getElementById('adminQ3').value = ACTUAL.actualScorers;
-      document.getElementById('adminHome').value = ACTUAL.homeScore;
-      document.getElementById('adminAway').value = ACTUAL.awayScore;
-    } else {
-      alert('Incorrect password');
-    }
-  });
-
-  document.getElementById('adminSaveBtn').addEventListener('click', () => {
-    ACTUAL.bothEnds = document.getElementById('adminQ1').value;
-    ACTUAL.cardsTotalRange = document.getElementById('adminQ2').value;
-    ACTUAL.actualScorers = document.getElementById('adminQ3').value.trim();
-    ACTUAL.homeScore = parseInt(document.getElementById('adminHome').value) || 0;
-    ACTUAL.awayScore = parseInt(document.getElementById('adminAway').value) || 0;
-    localStorage.setItem('quiz_actual', JSON.stringify(ACTUAL));
-    document.getElementById('adminMsg');
-    alert('Answers have been logged.');
-  });
-
-  /* ----------------- Clear Responses ----------------- */
-  document.getElementById('clearResponsesBtn').addEventListener('click', () => {
-    if (confirm('Are you sure you want to clear all saved responses and admin answers? This cannot be undone.')) {
-      localStorage.removeItem('quiz_predictions');
-      localStorage.removeItem('quiz_actual');
-      ACTUAL = { bothEnds: '', cardsTotalRange: '', actualScorers: '', homeScore: 0, awayScore: 0 };
-      initForm();
-      document.getElementById('userName').value = '';
-      selectedCardsValue = '';
-      document.getElementById('adminPanel').style.display = 'none';
-      alert('All responses and admin answers have been cleared.');
-    }
-  });
-
-  /* ----------------- Calculate Score ----------------- */
-  function calculateScore(prediction) {
-    let total = 0;
-    let breakdown = { q1: 0, q2: 0, q3: 0, q4_result: 0, q4_home: 0, q4_away: 0 };
-    const { q1, q2, q3, home, away } = prediction;
-
-    // Q1: Both ends goal (2 points)
-    if (q1 && ACTUAL.bothEnds) {
-      breakdown.q1 = (q1 === ACTUAL.bothEnds) ? 2 : 0;
-      total += breakdown.q1;
-    }
-
-    // Q2: Cards total range (3 points)
-    if (q2 && ACTUAL.cardsTotalRange) {
-      breakdown.q2 = (q2 === ACTUAL.cardsTotalRange) ? 3 : 0;
-      total += breakdown.q2;
-    }
-
-    // Q3: Albion scorer (4 points for first goal, +2 per additional goal)
-    if (q3 && ACTUAL.actualScorers !== undefined) {
-      let userScorer = q3.toLowerCase().trim();
-      let isNoOneActual = ACTUAL.actualScorers.trim().toLowerCase() === '' || ACTUAL.actualScorers.trim().toLowerCase() === 'no one';
-      if (userScorer === 'no one' && isNoOneActual) {
-        breakdown.q3 = 4;
-        total += 4;
-      } else if (userScorer && !isNoOneActual) {
-        let scorerMap = {};
-        ACTUAL.actualScorers.split(',').forEach(s => {
-          let [name, g] = s.trim().split(':');
-          if (name) {
-            scorerMap[name.trim().toLowerCase()] = parseInt(g, 10) || 1;
-          }
-        });
-        if (scorerMap[userScorer]) {
-          let goals = scorerMap[userScorer];
-          breakdown.q3 = 4 + (goals - 1) * 2;
-          total += breakdown.q3;
-        }
-      }
-    }
-
-    // Q4: Final score (4 points for result, 4 for home score, 4 for away score)
-    const actualResult = getResult(ACTUAL.homeScore, ACTUAL.awayScore);
-    const predictedResult = getResult(home, away);
-    if (predictedResult === actualResult) {
-      breakdown.q4_result = 4;
-      total += 4;
-    }
-    if (home === ACTUAL.homeScore) {
-      breakdown.q4_home = 4;
-      total += 4;
-    }
-    if (away === ACTUAL.awayScore) {
-      breakdown.q4_away = 4;
-      total += 4;
-    }
-
-    return { total, breakdown };
-  }
-
-  /* ----------------- Submit ----------------- */
-  document.getElementById('submitBtn').addEventListener('click', () => {
+  // SUBMIT TO GOOGLE SHEETS
+  document.getElementById('submitBtn').addEventListener('click', async () => {
     const name = document.getElementById('userName').value.trim();
     if (!name) {
       alert('Please enter your name.');
       return;
     }
+
     const q1 = document.querySelector('input[name="bothGoals"]:checked')?.value || '';
     const q2 = selectedCardsValue;
     let q3 = selectedText.textContent;
@@ -528,54 +344,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const home = parseInt(document.getElementById('homeScore').value) || 0;
     const away = parseInt(document.getElementById('awayScore').value) || 0;
 
-    let predictions = JSON.parse(localStorage.getItem('quiz_predictions')) || [];
-    predictions.push({ name, q1, q2, q3, home, away });
-    localStorage.setItem('quiz_predictions', JSON.stringify(predictions));
+    // PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+    const webhookUrl = 'https://script.google.com/macros/s/AKfycbyTRtNN5e1tZ8Q4OzNYyblJZjAysvQmVtSeLQbZ4213Kdcf5EejyybzExrixjeSb7kI/exec';
 
-    alert('Your prediction has been saved!');
+    const data = new URLSearchParams({
+      name: name,
+      q1: q1,
+      q2: q2,
+      q3: q3,
+      home: home,
+      away: away
+    });
 
-    // Clear form
-    initForm();
-    document.getElementById('userName').value = '';
-    selectedCardsValue = '';
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        body: data,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+
+      const result = await response.json();
+      if (result.result === 'success') {
+        alert('Your prediction has been saved!');
+        initForm();
+        document.getElementById('userName').value = '';
+        selectedCardsValue = '';
+      } else {
+        alert('Error: ' + result.error);
+      }
+    } catch (err) {
+      alert('No internet? Try again when connected.');
+    }
   });
 
-  /* ----------------- Reset ----------------- */
   document.getElementById('resetBtn').addEventListener('click', () => {
     initForm();
     document.getElementById('userName').value = '';
     selectedCardsValue = '';
-  });
-
-  /* ----------------- CSV ----------------- */
-  document.getElementById('downloadCsvBtn').addEventListener('click', () => {
-    let predictions = JSON.parse(localStorage.getItem('quiz_predictions')) || [];
-    if (!predictions.length) {
-      alert('No responses yet');
-      return;
-    }
-
-    // Compute scores and sort by score descending
-    predictions = predictions.map(p => {
-      const { total, breakdown } = calculateScore(p);
-      return { ...p, score: total, breakdown };
-    });
-    predictions.sort((a, b) => b.score - a.score);
-
-    // Add actual answers as a comment in the CSV
-    let csv = `# Actual Answers: Q1=${ACTUAL.bothEnds}, Q2=${ACTUAL.cardsTotalRange}, Q3=${ACTUAL.actualScorers}, Q4=${ACTUAL.homeScore}-${ACTUAL.awayScore}\n`;
-    csv += 'Rank,Name,Q1,Q2,Q3,Home,Away,Q1 Points,Q2 Points,Q3 Points,Q4 Result Points,Q4 Home Points,Q4 Away Points,Total Score\n';
-    predictions.forEach((p, index) => {
-      csv += `${index + 1},${p.name},${p.q1},${p.q2},${p.q3},${p.home},${p.away},${p.breakdown.q1},${p.breakdown.q2},${p.breakdown.q3},${p.breakdown.q4_result},${p.breakdown.q4_home},${p.breakdown.q4_away},${p.score}\n`;
-    });
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'responses.csv';
-    a.click();
-    URL.revokeObjectURL(url);
   });
 });
 </script>
