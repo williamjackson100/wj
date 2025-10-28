@@ -112,11 +112,11 @@
   <section class="card" id="q2">
     <div class="points-badge">3 pts</div>
     <label class="question">2) How many cards will be shown in total?</label>
-    <div class="muted">Choose a grouped range.</div>
+    <div class="muted">Choose a range. Counts both yellow and red cards across both teams.</div>
     <div style="margin-top:12px" class="custom-select" id="cardsCustom">
       <button type="button" class="cs-button" id="cardsButton">
-        <span class="label"><span id="cardsSelectedText">Select range</span></span>
-        <span style="opacity:0.8">Down Arrow</span>
+        <span class="label"><span id="cardsSelectedText">Select a range</span></span>
+        <span style="opacity:0.8">▾</span>
       </button>
       <div class="cs-options" id="cardsOptions" style="display:none"></div>
     </div>
@@ -126,25 +126,25 @@
   <section class="card" id="q3">
     <div class="points-badge">4 pts</div>
     <label class="question">3) Name an Albion scorer today</label>
-    <div class="muted">4 points for first goal, +2 for every subsequent goal.</div>
+    <div class="muted"><b>4 points</b> are awarded for player scoring and <b>+2</b> for each subsequent goal.</div>
     <div style="margin-top:12px" class="custom-select" id="scorerCustom">
       <button type="button" class="cs-button" id="scorerButton">
         <span class="label"><img class="flag" id="scorerSelectedFlag" src="" alt="" style="display:none;"><span id="scorerSelectedText">Select a player</span></span>
-        <span style="opacity:0.8">Down Arrow</span>
+        <span style="opacity:0.8">▾</span>
       </button>
       <div class="cs-options" id="scorerOptions" style="display:none"></div>
     </div>
     <div id="otherPlayerDiv" style="display:none;margin-top:10px">
       <input type="text" id="otherPlayerInput" placeholder="Type the player's name here (Other)" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit;" />
     </div>
-    <div class="small-muted">Includes "No one" and "Other".</div>
+    <div class="small-muted">Includes "Own goal", "No one" and "Someone else".</div>
   </section>
 
   <!-- Q4 -->
   <section class="card" id="q4">
     <div class="points-badge">12 pts</div>
     <label class="question">4) What will the final score be?</label>
-    <div class="muted">Give the exact score for Palace (home) and Albion (away).</div>
+    <div class="muted">Give the exact scores for each team. <b>4 points</b> are awarded for correct result, <b>4 points</b> available for correctly predicting each team's score.</div>
     <div class="row" style="margin-top:12px;gap:12px;align-items:center">
       <div class="score-input">
         <label class="muted" for="homeScore">Palace</label>
@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { value: 'Adam Webster', label: 'Adam Webster', flag: 'gb-eng' },
     { value: 'Danny Welbeck', label: 'Danny Welbeck', flag: 'gb-eng' },
     { value: 'Mats Wieffer', label: 'Mats Wieffer', flag: 'nl' },
+    { value: 'Own goal', label: 'Own goal', flag: null},
     { value: 'Other', label: 'Other (please type)', flag: null },
     { value: 'No one', label: 'No one', flag: null }
   ];
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let text = '';
     if (h > a) text = `Palace win ${h}-${a}`;
     else if (h < a) text = `Brighton win ${a}-${h}`;
-    else text = `Draw ${h}-${a}`;
+    else text = `${h}-${a} draw`;
     predictedOutcomeEl.textContent = text;
   }
 
